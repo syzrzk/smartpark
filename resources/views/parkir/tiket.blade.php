@@ -97,6 +97,16 @@
             background: #16a34a;
         }
 
+        .btn-download {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-download:hover {
+            background: #2563eb;
+        }
+
         .btn-back {
             background: #64748b;
             color: white;
@@ -157,6 +167,10 @@
 
         <!-- BUTTON -->
         <div class="btn-group">
+            
+            <button onclick="downloadQR()" class="btn btn-download" style="width:100%; border:none; cursor:pointer;">
+                <i class="fa fa-download"></i> Download QR
+            </button>
 
             <a href="{{ route('parkir.scan') }}" class="btn btn-scan">
                 <i class="fa fa-qrcode"></i> Scan QR Keluar
@@ -171,6 +185,28 @@
     </div>
 
 </div>
+
+<script>
+function downloadQR() {
+    const url = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ $parkir->qr_code }}";
+    fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const blobUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = "QR_Parkir_{{ $parkir->qr_code }}.png";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(blobUrl);
+        })
+        .catch(err => {
+            alert('Gagal mendownload QR Code. Silakan coba lagi.');
+            console.error(err);
+        });
+}
+</script>
 
 </body>
 </html>

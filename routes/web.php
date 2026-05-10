@@ -35,7 +35,9 @@ Route::get('/auth/google/callback', function () {
 
     try {
 
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
+        $driver = Socialite::driver('google');
+        $googleUser = $driver->stateless()->user();
 
         $user = User::updateOrCreate(
             ['email' => $googleUser->email],
@@ -80,7 +82,7 @@ Route::get('/auth/google/callback', function () {
 
 // Halaman utama
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Form masuk parkir
@@ -96,6 +98,7 @@ Route::get('/scan', function () {
 // Proses parkir
 Route::post('/masuk', [ParkirController::class, 'masuk'])->name('parkir.masuk');
 Route::post('/parkir/keluar', [ParkirController::class, 'keluar'])->name('parkir.keluar');
+Route::post('/parkir/keluar-plat', [ParkirController::class, 'keluarByPlat'])->name('parkir.keluarByPlat');
 Route::post('/bayar/{id}', [ParkirController::class, 'bayar'])->name('bayar');
 Route::get('/bayar/sukses/{id}', [ParkirController::class, 'sukses'])->name('bayar.sukses');
 // Tiket & struk
@@ -104,17 +107,17 @@ Route::get('/struk/{id}', [ParkirController::class, 'struk'])->name('struk');
 Route::get('/struk/{id}/download', [ParkirController::class, 'downloadStruk'])
     ->name('struk.download');
 
-// API dashboard
+// API dashboard (live refresh)
 Route::get('/api/dashboard', function () {
+    $today = \Carbon\Carbon::today();
     return response()->json([
-        'totalKendaraan' => \App\Models\Parkir::where('status','masuk')->count(),
-        'totalPendapatan' => \App\Models\Parkir::where('status','keluar')->sum('biaya'),
-        'motor' => \App\Models\Parkir::whereHas('kendaraan', fn($q) => 
-            $q->where('jenis_kendaraan','motor')
-        )->count(),
-        'mobil' => \App\Models\Parkir::whereHas('kendaraan', fn($q) => 
-            $q->where('jenis_kendaraan','mobil')
-        )->count(),
+        'totalKendaraan'   => \App\Models\Parkir::where('status','masuk')->count(),
+        'totalPendapatan'  => \App\Models\Parkir::where('status','keluar')
+                                ->whereDate('waktu_keluar', $today)->sum('biaya'),
+        'motor' => \App\Models\Parkir::where('status','masuk')
+                    ->whereHas('kendaraan', fn($q) => $q->where('jenis_kendaraan','motor'))->count(),
+        'mobil' => \App\Models\Parkir::where('status','masuk')
+                    ->whereHas('kendaraan', fn($q) => $q->where('jenis_kendaraan','mobil'))->count(),
     ]);
 })->name('api.dashboard');
 
@@ -131,6 +134,10 @@ Route::middleware(['auth'])->group(function () {
         ->name('dashboard');
 
     Route::resource('user', UserController::class);
+
+    // Data Kendaraan Masuk
+    Route::get('/kendaraan', [ParkirController::class, 'index'])->name('parkir.index');
+    Route::delete('/kendaraan/{id}', [ParkirController::class, 'destroy'])->name('parkir.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

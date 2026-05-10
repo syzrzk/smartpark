@@ -2,64 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tarif;
 use Illuminate\Http\Request;
 
 class TarifController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $tarifs = Tarif::all();
+        return view('tarif.index', compact('tarifs'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('tarif.form');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-   public function store(Request $request)
-{
-    \App\Models\Tarif::create($request->all());
-    return redirect()->back();
-}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'jenis_kendaraan' => 'required|string|max:50|unique:tarifs,jenis_kendaraan',
+            'tarif_awal' => 'required|numeric|min:0',
+            'jam_awal' => 'required|numeric|min:1',
+            'harga_per_jam' => 'required|numeric|min:0',
+        ]);
+
+        Tarif::create($request->all());
+
+        return redirect()->route('tarif.index')->with('success', 'Tarif berhasil ditambahkan.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Tarif $tarif)
     {
-        //
+        return view('tarif.form', compact('tarif'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Tarif $tarif)
     {
-        //
+        $request->validate([
+            'jenis_kendaraan' => 'required|string|max:50|unique:tarifs,jenis_kendaraan,'.$tarif->id,
+            'tarif_awal' => 'required|numeric|min:0',
+            'jam_awal' => 'required|numeric|min:1',
+            'harga_per_jam' => 'required|numeric|min:0',
+        ]);
+
+        $tarif->update($request->all());
+
+        return redirect()->route('tarif.index')->with('success', 'Tarif berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Tarif $tarif)
     {
-        //
+        Tarif::destroy($tarif->id);
+        return redirect()->route('tarif.index')->with('success', 'Tarif berhasil dihapus.');
     }
 }
