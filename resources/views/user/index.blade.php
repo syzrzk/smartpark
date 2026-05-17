@@ -121,6 +121,11 @@
     gap: 10px;
     flex-wrap: nowrap;
 }
+.action-btns{
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
 .user-table td:last-child{
     text-align: left !important;
 }
