@@ -126,14 +126,6 @@
     text-align: left !important;
 }
 
-.user-table td:last-child{
-    text-align: left !important;
-}
-
-.user-table th:last-child{
-    text-align: left !important;
-}
-
 .action-btns form{
     margin: 0;
 }
@@ -170,6 +162,14 @@
         .empty-title { font-size: 16px; font-weight: 600; color: #475569; margin-bottom: 4px; }
         .dark .empty-title { color: #cbd5e1; }
         .empty-sub { font-size: 13px; color: #94a3b8; }
+        .user-table td:last-child{
+ .user-table td{
+    text-align:left !important;
+}
+
+.user-table th{
+    text-align:left !important;
+}
     </style>
 
     <x-slot name="header">Manajemen Data Petugas</x-slot>
@@ -248,28 +248,30 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td style="text-align:left;">
-    <div class="action-btns">
+                                <td style="width:170px; text-align:left !important;">
+    <div style="
+        display:flex;
+        justify-content:flex-start;
+        align-items:center;
+        gap:10px;
+        width:100%;
+    ">
 
-        <!-- Tombol Edit -->
-        <a href="{{ route('user.edit', $u->id) }}"
+        <!-- Tombol Tiket -->
+        <a href="#"
            class="btn-icon btn-edit"
-           title="Edit Data">
-            <i class="fas fa-pen"></i>
+           title="Tiket">
+            <i class="fas fa-eye"></i>
         </a>
 
         <!-- Tombol Delete -->
-        <form action="{{ route('user.destroy', $u->id) }}"
+        <form action="#"
               method="POST"
-              class="m-0"
-              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data petugas ini secara permanen?')">
-
-            @csrf
-            @method('DELETE')
+              style="margin:0;">
 
             <button type="submit"
                     class="btn-icon btn-delete"
-                    title="Hapus Data">
+                    title="Hapus">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </form>
