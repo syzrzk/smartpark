@@ -142,7 +142,10 @@
             @endif
 
             <div class="tarif-card">
-                <div class="tarif-card-header">
+                <div class="tarif-card-header" style="justify-content: flex-start; gap: 20px;">
+                    <a href="{{ route('tarif.create') }}" class="btn-add">
+                        <i class="fas fa-plus"></i> Tambah Tarif
+                    </a>
                     <div class="header-title-box">
                         <div class="header-icon">
                             <i class="fas fa-coins"></i>
@@ -152,43 +155,21 @@
                             <p>Kelola tarif awal dan tarif per jam untuk setiap jenis kendaraan.</p>
                         </div>
                     </div>
-                    <a href="{{ route('tarif.create') }}" class="btn-add">
-                        <i class="fas fa-plus"></i> Tambah Tarif
-                    </a>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="tarif-table">
                         <thead>
                             <tr>
+                                <th style="text-align:left;">Tindakan</th>
                                 <th>Jenis Kendaraan</th>
                                 <th>Tarif Dasar</th>
                                 <th>Tarif Tambahan</th>
-                                <th style="text-align:left;">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($tarifs as $t)
                             <tr>
-                                <td>
-                                    @if(strtolower($t->jenis_kendaraan) == 'motor')
-                                        <div class="vehicle-badge badge-motor">
-                                            <i class="fas fa-motorcycle"></i> Motor
-                                        </div>
-                                    @else
-                                        <div class="vehicle-badge badge-mobil">
-                                            <i class="fas fa-car"></i> Mobil
-                                        </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="price-text">Rp {{ number_format($t->tarif_awal, 0, ',', '.') }}</div>
-                                    <div class="price-sub">Untuk {{ $t->jam_awal }} Jam Pertama</div>
-                                </td>
-                                <td>
-                                    <div class="price-text" style="color:#3b82f6;">+ Rp {{ number_format($t->harga_per_jam, 0, ',', '.') }}</div>
-                                    <div class="price-sub">Per Jam Berikutnya</div>
-                                </td>
                                 <td style="text-align:left;">
     <div class="action-btns">
 
@@ -216,6 +197,25 @@
 
     </div>
 </td>
+                                <td>
+                                    @if(strtolower($t->jenis_kendaraan) == 'motor')
+                                        <div class="vehicle-badge badge-motor">
+                                            <i class="fas fa-motorcycle"></i> Motor
+                                        </div>
+                                    @else
+                                        <div class="vehicle-badge badge-mobil">
+                                            <i class="fas fa-car"></i> Mobil
+                                        </div>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="price-text">Rp {{ number_format($t->tarif_awal, 0, ',', '.') }}</div>
+                                    <div class="price-sub">Untuk {{ $t->jam_awal }} Jam Pertama</div>
+                                </td>
+                                <td>
+                                    <div class="price-text" style="color:#3b82f6;">+ Rp {{ number_format($t->harga_per_jam, 0, ',', '.') }}</div>
+                                    <div class="price-sub">Per Jam Berikutnya</div>
+                                </td>
                             </tr>
                             @endforeach
 

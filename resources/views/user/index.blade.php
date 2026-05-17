@@ -182,7 +182,10 @@
             @endif
 
             <div class="user-card">
-                <div class="user-card-header">
+                <div class="user-card-header" style="justify-content: flex-start; gap: 20px;">
+                    <a href="{{ route('user.create') }}" class="btn-add">
+                        <i class="fas fa-user-plus"></i> Tambah Petugas
+                    </a>
                     <div class="header-title-box">
                         <div class="header-icon">
                             <i class="fas fa-users-cog"></i>
@@ -192,24 +195,55 @@
                             <p>Kelola hak akses dan profil petugas parkir serta administrator.</p>
                         </div>
                     </div>
-                    <a href="{{ route('user.create') }}" class="btn-add">
-                        <i class="fas fa-user-plus"></i> Tambah Petugas
-                    </a>
                 </div>
 
                 <div class="overflow-x-auto">
                     <table class="user-table">
                         <thead>
                             <tr>
+                                <th style="text-align:left;">Tindakan</th>
                                 <th style="text-align:left;">Profil Petugas</th>
                                 <th style="text-align:left;">Kontak & Email</th>
                                 <th style="text-align:left;">Jabatan</th>
-                                <th style="text-align:left;">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($users as $u)
                             <tr>
+                                <td style="width:170px; text-align:left !important;">
+    <div style="
+        display:flex;
+        justify-content:flex-start;
+        align-items:center;
+        gap:10px;
+        width:100%;
+    ">
+
+        <!-- Tombol Edit -->
+        <a href="{{ route('user.edit', $u->id) }}"
+           class="btn-icon btn-edit"
+           title="Edit Data">
+            <i class="fas fa-pen"></i>
+        </a>
+
+        <!-- Tombol Delete -->
+        <form action="{{ route('user.destroy', $u->id) }}"
+              method="POST"
+              style="margin:0;"
+              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                    class="btn-icon btn-delete"
+                    title="Hapus Data">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </form>
+
+    </div>
+</td>
                                 <td>
                                     <div class="profile-cell">
                                         <div class="avatar-box">
@@ -245,40 +279,6 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td style="width:170px; text-align:left !important;">
-    <div style="
-        display:flex;
-        justify-content:flex-start;
-        align-items:center;
-        gap:10px;
-        width:100%;
-    ">
-
-        <!-- Tombol Edit -->
-        <a href="{{ route('user.edit', $u->id) }}"
-           class="btn-icon btn-edit"
-           title="Edit Data">
-            <i class="fas fa-pen"></i>
-        </a>
-
-        <!-- Tombol Delete -->
-        <form action="{{ route('user.destroy', $u->id) }}"
-              method="POST"
-              style="margin:0;"
-              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
-
-            @csrf
-            @method('DELETE')
-
-            <button type="submit"
-                    class="btn-icon btn-delete"
-                    title="Hapus Data">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </form>
-
-    </div>
-</td>
                             </tr>
                             @endforeach
 
