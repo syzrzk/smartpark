@@ -114,7 +114,13 @@
         .dark .badge-petugas { background: rgba(3,105,161,0.2); color: #7dd3fc; border-color: rgba(3,105,161,0.5); }
 
         /* Actions */
-        .action-btns { display: flex; gap: 8px; justify-content: flex-end; }
+        .action-btns { 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
         .btn-icon {
             width: 34px; height: 34px; border-radius: 10px; display: flex;
             align-items: center; justify-content: center; font-size: 13px;
@@ -181,7 +187,7 @@
                                 <th style="text-align:left;">Profil Petugas</th>
                                 <th style="text-align:left;">Kontak & Email</th>
                                 <th style="text-align:left;">Jabatan</th>
-                                <th style="text-align:right;">Tindakan</th>
+                                <th style="text-align:left;">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -222,20 +228,34 @@
                                         </div>
                                     @endif
                                 </td>
-                                <td>
-                                    <div class="action-btns">
-                                        <a href="{{ route('user.edit', $u->id) }}" class="btn-icon btn-edit" title="Edit Data">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                        <form action="{{ route('user.destroy', $u->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data petugas ini secara permanen?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-icon btn-delete" title="Hapus Data">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td style="text-align:left;">
+    <div class="action-btns">
+
+        <!-- Tombol Edit -->
+        <a href="{{ route('user.edit', $u->id) }}"
+           class="btn-icon btn-edit"
+           title="Edit Data">
+            <i class="fas fa-pen"></i>
+        </a>
+
+        <!-- Tombol Delete -->
+        <form action="{{ route('user.destroy', $u->id) }}"
+              method="POST"
+              class="m-0"
+              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data petugas ini secara permanen?')">
+
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                    class="btn-icon btn-delete"
+                    title="Hapus Data">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </form>
+
+    </div>
+</td>
                             </tr>
                             @endforeach
 

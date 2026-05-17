@@ -101,7 +101,12 @@
             transition: all 0.2s;
             text-decoration: none;
         }
-
+        .action-btn {
+          white-space: nowrap;
+        }
+        td:last-child {
+        min-width: 220px;
+        }
         .btn-detail  { background: #dbeafe; color: #1d4ed8; }
         .btn-detail:hover { background: #bfdbfe; color: #1d4ed8; }
 
@@ -347,25 +352,42 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="d-flex gap-1 justify-content-center flex-wrap">
-                                    <a href="{{ route('tiket', $p->id) }}" class="action-btn btn-detail" title="Tiket">
-                                        <i class="fas fa-eye"></i> Tiket
-                                    </a>
-                                    @if($p->status == 'keluar')
-                                    <a href="{{ route('struk', $p->id) }}" class="action-btn btn-struk" title="Struk">
-                                        <i class="fas fa-receipt"></i> Struk
-                                    </a>
-                                    @endif
-                                    <form action="{{ route('parkir.destroy', $p->id) }}" method="POST"
-                                        onsubmit="return confirmHapus(this, '{{ optional($p->kendaraan)->plat_nomor }}')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="action-btn btn-hapus" title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+                               <div class="d-flex align-items-center justify-content-start gap-2 flex-nowrap">
+        <!-- Tombol Tiket -->
+        <a href="{{ route('tiket', $p->id) }}"
+           class="action-btn btn-detail"
+           title="Tiket">
+            <i class="fas fa-eye"></i>
+            Tiket
+        </a>
+
+        <!-- Tombol Struk -->
+        @if($p->status == 'keluar')
+        <a href="{{ route('struk', $p->id) }}"
+           class="action-btn btn-struk"
+           title="Struk">
+            <i class="fas fa-receipt"></i>
+            Struk
+        </a>
+        @endif
+
+        <!-- Tombol Hapus -->
+        <form action="{{ route('parkir.destroy', $p->id) }}"
+              method="POST"
+              onsubmit="return confirmHapus(this, '{{ optional($p->kendaraan)->plat_nomor }}')"
+              class="m-0">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                    class="action-btn btn-hapus"
+                    title="Hapus">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+
+    </div>
+</td>
                         </tr>
                         @empty
                         <tr>

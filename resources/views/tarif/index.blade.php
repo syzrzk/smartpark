@@ -91,7 +91,13 @@
         .price-sub { font-size: 12px; color: #64748b; font-weight: 500; }
 
         /* Actions */
-        .action-btns { display: flex; gap: 8px; justify-content: flex-end; }
+        .action-btns { 
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    flex-wrap: nowrap;
+}
         .btn-icon {
             width: 34px; height: 34px; border-radius: 10px; display: flex;
             align-items: center; justify-content: center; font-size: 13px;
@@ -158,7 +164,7 @@
                                 <th>Jenis Kendaraan</th>
                                 <th>Tarif Dasar</th>
                                 <th>Tarif Tambahan</th>
-                                <th style="text-align:right;">Tindakan</th>
+                                <th style="text-align:left;">Tindakan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -183,20 +189,33 @@
                                     <div class="price-text" style="color:#3b82f6;">+ Rp {{ number_format($t->harga_per_jam, 0, ',', '.') }}</div>
                                     <div class="price-sub">Per Jam Berikutnya</div>
                                 </td>
-                                <td>
-                                    <div class="action-btns">
-                                        <a href="{{ route('tarif.edit', $t->id) }}" class="btn-icon btn-edit" title="Edit Tarif">
-                                            <i class="fas fa-pen"></i>
-                                        </a>
-                                        <form action="{{ route('tarif.destroy', $t->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tarif ini secara permanen?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-icon btn-delete" title="Hapus Tarif">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
+                                <td style="text-align:left;">
+    <div class="action-btns">
+
+        <!-- Tombol Edit -->
+        <a href="{{ route('tarif.edit', $t->id) }}"
+           class="btn-icon btn-edit"
+           title="Edit Tarif">
+            <i class="fas fa-pen"></i>
+        </a>
+
+        <!-- Tombol Delete -->
+        <form action="{{ route('tarif.destroy', $t->id) }}"
+              method="POST"
+              onsubmit="return confirm('Apakah Anda yakin ingin menghapus tarif ini secara permanen?')"
+              class="m-0">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit"
+                    class="btn-icon btn-delete"
+                    title="Hapus Tarif">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </form>
+
+    </div>
+</td>
                             </tr>
                             @endforeach
 
