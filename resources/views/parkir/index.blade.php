@@ -88,22 +88,21 @@
         .dark .page-item .page-link { background: #0f172a; border-color: #334155; color: #cbd5e1; }
         .dark .page-item.active .page-link { background: #3b82f6; border-color: #3b82f6; color: white; }
 
-        .action-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 5px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
-        .action-btn {
-          white-space: nowrap;
-        }
+        .action-btns{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:6px;
+    flex-wrap:nowrap;
+    min-width:140px;
+}
+
+.action-btns .btn{
+    padding:6px 10px;
+    font-size:13px;
+    border-radius:10px;
+    white-space:nowrap;
+}
         td:last-child {
         min-width: 220px;
         }
@@ -191,6 +190,13 @@
         .dataTables_wrapper .dataTables_paginate {
             padding: 14px 20px;
         }
+        table{
+    min-width:1200px;
+}
+
+.overflow-x-auto{
+    overflow-x:auto;
+}
     </style>
 
     <div class="container-fluid">
@@ -351,42 +357,40 @@
                                     </span>
                                 @endif
                             </td>
-                            <td>
-                               <div class="d-flex align-items-center justify-content-start gap-2 flex-nowrap">
-        <!-- Tombol Tiket -->
-        <a href="{{ route('tiket', $p->id) }}"
-           class="action-btn btn-detail"
-           title="Tiket">
+                            <td style="min-width:170px; text-align:left;">
+
+    <div class="action-btns">
+
+        {{-- Tombol Tiket --}}
+        <a href="{{ route('kendaraan.show', $k->id) }}"
+           class="btn btn-primary btn-sm">
             <i class="fas fa-eye"></i>
-            Tiket
         </a>
 
-        <!-- Tombol Struk -->
-        @if($p->status == 'keluar')
-        <a href="{{ route('struk', $p->id) }}"
-           class="action-btn btn-struk"
-           title="Struk">
+        {{-- Tombol Struk --}}
+        @if($k->status == 'keluar')
+        <a href="{{ route('kendaraan.struk', $k->id) }}"
+           class="btn btn-success btn-sm">
             <i class="fas fa-receipt"></i>
-            Struk
         </a>
         @endif
 
-        <!-- Tombol Hapus -->
-        <form action="{{ route('parkir.destroy', $p->id) }}"
+        {{-- Tombol Delete --}}
+        <form action="{{ route('kendaraan.destroy', $k->id) }}"
               method="POST"
-              onsubmit="return confirmHapus(this, '{{ optional($p->kendaraan)->plat_nomor }}')"
-              class="m-0">
+              style="display:inline;">
+
             @csrf
             @method('DELETE')
 
             <button type="submit"
-                    class="action-btn btn-hapus"
-                    title="Hapus">
+                    class="btn btn-danger btn-sm">
                 <i class="fas fa-trash"></i>
             </button>
         </form>
 
     </div>
+
 </td>
                         </tr>
                         @empty

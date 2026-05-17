@@ -114,24 +114,20 @@
         .dark .badge-petugas { background: rgba(3,105,161,0.2); color: #7dd3fc; border-color: rgba(3,105,161,0.5); }
 
         /* Actions */
-        .action-btns { 
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    flex-wrap: nowrap;
-}
-.action-btns{
-    justify-content: flex-start !important;
-    text-align: left !important;
+      .action-btns{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:6px;
+    flex-wrap:nowrap;
+    min-width:140px;
 }
 
-.action-btns form{
-    margin: 0;
-}
-
-.action-btns{
-    width: 100%;
+.action-btns .btn{
+    padding:6px 10px;
+    font-size:13px;
+    border-radius:10px;
+    white-space:nowrap;
 }
         .btn-icon {
             width: 34px; height: 34px; border-radius: 10px; display: flex;
