@@ -142,7 +142,7 @@
             @endif
 
             <div class="tarif-card">
-                <div class="tarif-card-header" style="justify-content: flex-start; gap: 20px;">
+                <div class="tarif-card-header" style="justify-content: space-between;">
                     <a href="{{ route('tarif.create') }}" class="btn-add">
                         <i class="fas fa-plus"></i> Tambah Tarif
                     </a>

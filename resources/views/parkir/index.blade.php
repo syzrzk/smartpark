@@ -105,7 +105,7 @@
           white-space: nowrap;
         }
 
-        td:last-child {
+        td:nth-child(2) {
         min-width: 220px;
         }
         .btn-detail  { background: #dbeafe; color: #1d4ed8; }
@@ -208,7 +208,7 @@
         <div class="table-card">
 
             {{-- Header --}}
-            <div class="card-header-custom" style="justify-content: flex-start; gap: 20px;">
+            <div class="card-header-custom" style="justify-content: space-between;">
                 <a href="{{ route('masuk.form') }}" class="btn btn-light btn-sm fw-semibold">
                     <i class="fas fa-plus me-1"></i> Tambah Kendaraan
                 </a>

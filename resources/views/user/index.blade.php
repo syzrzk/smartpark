@@ -158,8 +158,8 @@
         .empty-title { font-size: 16px; font-weight: 600; color: #475569; margin-bottom: 4px; }
         .dark .empty-title { color: #cbd5e1; }
         .empty-sub { font-size: 13px; color: #94a3b8; }
-  .user-table td:last-child,
-.user-table th:last-child{
+  .user-table td:first-child,
+.user-table th:first-child{
     width: 180px !important;
     text-align: left !important;
 }
@@ -182,7 +182,7 @@
             @endif
 
             <div class="user-card">
-                <div class="user-card-header" style="justify-content: flex-start; gap: 20px;">
+                <div class="user-card-header" style="justify-content: space-between;">
                     <a href="{{ route('user.create') }}" class="btn-add">
                         <i class="fas fa-user-plus"></i> Tambah Petugas
                     </a>
