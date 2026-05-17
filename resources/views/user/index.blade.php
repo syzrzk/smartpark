@@ -162,12 +162,14 @@
         .empty-title { font-size: 16px; font-weight: 600; color: #475569; margin-bottom: 4px; }
         .dark .empty-title { color: #cbd5e1; }
         .empty-sub { font-size: 13px; color: #94a3b8; }
-        .user-table td:last-child{
+  .user-table td:last-child,
+.user-table th:last-child{
+    width: 180px !important;
     text-align: left !important;
 }
 
-.user-table th:last-child{
-    text-align: left !important;
+.user-table td{
+    text-align:left !important;
 }
     </style>
 
@@ -256,21 +258,25 @@
         width:100%;
     ">
 
-        <!-- Tombol Tiket -->
-        <a href="#"
+        <!-- Tombol Edit -->
+        <a href="{{ route('user.edit', $u->id) }}"
            class="btn-icon btn-edit"
-           title="Tiket">
-            <i class="fas fa-eye"></i>
+           title="Edit Data">
+            <i class="fas fa-pen"></i>
         </a>
 
         <!-- Tombol Delete -->
-        <form action="#"
+        <form action="{{ route('user.destroy', $u->id) }}"
               method="POST"
-              style="margin:0;">
+              style="margin:0;"
+              onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?')">
+
+            @csrf
+            @method('DELETE')
 
             <button type="submit"
                     class="btn-icon btn-delete"
-                    title="Hapus">
+                    title="Hapus Data">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </form>
