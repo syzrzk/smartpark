@@ -121,6 +121,21 @@
     gap: 10px;
     flex-wrap: nowrap;
 }
+.user-table td:last-child{
+    text-align: left !important;
+}
+
+.user-table th:last-child{
+    text-align: left !important;
+}
+
+.action-btns form{
+    margin: 0;
+}
+
+.action-btns{
+    width: 100%;
+}
         .btn-icon {
             width: 34px; height: 34px; border-radius: 10px; display: flex;
             align-items: center; justify-content: center; font-size: 13px;
