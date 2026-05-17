@@ -208,14 +208,17 @@
         <div class="table-card">
 
             {{-- Header --}}
-            <div class="card-header-custom" style="justify-content: space-between;">
-                <a href="{{ route('masuk.form') }}" class="btn btn-light btn-sm fw-semibold">
-                    <i class="fas fa-plus me-1"></i> Tambah Kendaraan
-                </a>
-                <div>
+            <div class="card-header-custom" style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="flex: 1; display: flex; justify-content: flex-start;">
+                    <a href="{{ route('masuk.form') }}" class="btn btn-light btn-sm fw-semibold">
+                        <i class="fas fa-plus me-1"></i> Tambah Kendaraan
+                    </a>
+                </div>
+                <div style="flex: 2; display: flex; flex-direction: column; align-items: center; text-align: center;">
                     <h5 class="text-white fw-bold mb-1"><i class="fas fa-car me-2"></i>Data Kendaraan Masuk</h5>
                     <small class="text-white opacity-75">Kelola semua data kendaraan yang terdaftar di sistem parkir</small>
                 </div>
+                <div style="flex: 1;"></div>
             </div>
 
             {{-- Filter Bar --}}

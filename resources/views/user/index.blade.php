@@ -182,11 +182,13 @@
             @endif
 
             <div class="user-card">
-                <div class="user-card-header" style="justify-content: space-between;">
-                    <a href="{{ route('user.create') }}" class="btn-add">
-                        <i class="fas fa-user-plus"></i> Tambah Petugas
-                    </a>
-                    <div class="header-title-box">
+                <div class="user-card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="flex: 1; display: flex; justify-content: flex-start;">
+                        <a href="{{ route('user.create') }}" class="btn-add">
+                            <i class="fas fa-user-plus"></i> Tambah Petugas
+                        </a>
+                    </div>
+                    <div class="header-title-box" style="flex: 2; justify-content: center; text-align: left;">
                         <div class="header-icon">
                             <i class="fas fa-users-cog"></i>
                         </div>
@@ -195,6 +197,7 @@
                             <p>Kelola hak akses dan profil petugas parkir serta administrator.</p>
                         </div>
                     </div>
+                    <div style="flex: 1;"></div>
                 </div>
 
                 <div class="overflow-x-auto">

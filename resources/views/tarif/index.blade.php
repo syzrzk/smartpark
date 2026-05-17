@@ -142,11 +142,13 @@
             @endif
 
             <div class="tarif-card">
-                <div class="tarif-card-header" style="justify-content: space-between;">
-                    <a href="{{ route('tarif.create') }}" class="btn-add">
-                        <i class="fas fa-plus"></i> Tambah Tarif
-                    </a>
-                    <div class="header-title-box">
+                <div class="tarif-card-header" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="flex: 1; display: flex; justify-content: flex-start;">
+                        <a href="{{ route('tarif.create') }}" class="btn-add">
+                            <i class="fas fa-plus"></i> Tambah Tarif
+                        </a>
+                    </div>
+                    <div class="header-title-box" style="flex: 2; justify-content: center; text-align: left;">
                         <div class="header-icon">
                             <i class="fas fa-coins"></i>
                         </div>
@@ -155,6 +157,7 @@
                             <p>Kelola tarif awal dan tarif per jam untuk setiap jenis kendaraan.</p>
                         </div>
                     </div>
+                    <div style="flex: 1;"></div>
                 </div>
 
                 <div class="overflow-x-auto">
