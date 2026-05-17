@@ -270,6 +270,7 @@
                     <thead>
                         <tr>
                             <th style="width:44px;">#</th>
+                            <th style="width:160px;">Aksi</th>
                             <th>Plat Nomor</th>
                             <th>Jenis</th>
                             <th>Waktu Masuk</th>
@@ -277,13 +278,48 @@
                             <th>Durasi</th>
                             <th>Biaya</th>
                             <th>Status</th>
-                            <th style="width:160px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($parkirs as $i => $p)
                         <tr>
                             <td class="text-muted fw-medium">{{ $parkirs->firstItem() + $i }}</td>
+                            <td>
+                               <div class="d-flex align-items-center justify-content-start gap-2 flex-nowrap">
+                                    <!-- Tombol Tiket -->
+                                    <a href="{{ route('tiket', $p->id) }}"
+                                       class="action-btn btn-detail"
+                                       title="Tiket">
+                                        <i class="fas fa-eye"></i>
+                                        Tiket
+                                    </a>
+
+                                    <!-- Tombol Struk -->
+                                    @if($p->status == 'keluar')
+                                    <a href="{{ route('struk', $p->id) }}"
+                                       class="action-btn btn-struk"
+                                       title="Struk">
+                                        <i class="fas fa-receipt"></i>
+                                        Struk
+                                    </a>
+                                    @endif
+
+                                    <!-- Tombol Hapus -->
+                                    <form action="{{ route('parkir.destroy', $p->id) }}"
+                                          method="POST"
+                                          onsubmit="return confirmHapus(this, '{{ optional($p->kendaraan)->plat_nomor }}')"
+                                          class="m-0">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                                class="action-btn btn-hapus"
+                                                title="Hapus">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                             <td>
                                 <span class="fw-bold text-plat" style="letter-spacing:0.5px;">
                                     {{ optional($p->kendaraan)->plat_nomor ?? '-' }}
@@ -352,43 +388,6 @@
                                     </span>
                                 @endif
                             </td>
-                            <td>
-                               <div class="d-flex align-items-center justify-content-start gap-2 flex-nowrap">
-        <!-- Tombol Tiket -->
-        <a href="{{ route('tiket', $p->id) }}"
-           class="action-btn btn-detail"
-           title="Tiket">
-            <i class="fas fa-eye"></i>
-            Tiket
-        </a>
-
-        <!-- Tombol Struk -->
-        @if($p->status == 'keluar')
-        <a href="{{ route('struk', $p->id) }}"
-           class="action-btn btn-struk"
-           title="Struk">
-            <i class="fas fa-receipt"></i>
-            Struk
-        </a>
-        @endif
-
-        <!-- Tombol Hapus -->
-        <form action="{{ route('parkir.destroy', $p->id) }}"
-              method="POST"
-              onsubmit="return confirmHapus(this, '{{ optional($p->kendaraan)->plat_nomor }}')"
-              class="m-0">
-            @csrf
-            @method('DELETE')
-
-            <button type="submit"
-                    class="action-btn btn-hapus"
-                    title="Hapus">
-                <i class="fas fa-trash"></i>
-            </button>
-        </form>
-
-    </div>
-</td>
                         </tr>
                         @empty
                         <tr>
