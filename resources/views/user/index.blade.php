@@ -163,12 +163,11 @@
         .dark .empty-title { color: #cbd5e1; }
         .empty-sub { font-size: 13px; color: #94a3b8; }
         .user-table td:last-child{
- .user-table td{
-    text-align:left !important;
+    text-align: left !important;
 }
 
-.user-table th{
-    text-align:left !important;
+.user-table th:last-child{
+    text-align: left !important;
 }
     </style>
 
