@@ -17,7 +17,7 @@ class ReportingController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Parkir::with(['kendaraan', 'user'])->where('status', 'keluar');
+        $query = Parkir::with(['kendaraan'])->where('status', 'keluar');
 
         // Filter Tanggal Awal
         if ($request->filled('tanggal_awal')) {
@@ -125,7 +125,7 @@ class ReportingController extends Controller
      */
     public function downloadPdf(Request $request)
     {
-        $query = Parkir::with(['kendaraan', 'user'])->where('status', 'keluar');
+        $query = Parkir::with(['kendaraan'])->where('status', 'keluar');
 
         // Filter Tanggal Awal
         if ($request->filled('tanggal_awal')) {
