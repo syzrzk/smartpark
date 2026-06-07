@@ -255,7 +255,31 @@
         <input type="hidden" name="foto_masuk_data" id="fotoMasukData">
         <input type="hidden" name="member_qr_code" id="memberQrCode" value="">
 
-        <a href="{{ route('parkir.masuk.member') }}" class="btn-submit text-decoration-none text-white d-flex justify-content-center align-items-center">
+        {{-- Validation errors --}}
+        @if ($errors->any())
+            <div class="info-strip" style="background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2);">
+                <i class="fas fa-exclamation-triangle" style="color:#ef4444"></i>
+                <div>
+                    <strong>Terjadi kesalahan:</strong>
+                    <ul style="margin:6px 0 0 18px; color:#ffdede;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+
+        {{-- Jenis Kendaraan (wajib untuk proses tiket reguler) --}}
+        <div style="margin-bottom:12px;">
+            <label for="jenis_kendaraan" style="display:block; font-size:13px; color:#cbd5e1; margin-bottom:6px;">Jenis Kendaraan</label>
+            <select name="jenis_kendaraan" id="jenis_kendaraan" style="width:100%; padding:10px 12px; border-radius:10px; background:rgba(255,255,255,0.03); color:#e2e8f0; border:1px solid rgba(255,255,255,0.06);">
+                <option value="motor">Motor</option>
+                <option value="mobil">Mobil</option>
+            </select>
+        </div>
+
+        <a href="{{ route('parkir.masuk.member') }}" class="btn-submit text-decoration-none text-white d-flex justify-content-center align-items-center" style="margin-bottom:10px;">
             <i class="fas fa-id-card me-2"></i> Scan Member QR
         </a>
 
