@@ -57,18 +57,23 @@ class DashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        // Total member aktif
-        $totalMemberAktif = Member::where('is_active', true)
-            ->whereDate('expired_at', '>=', now())
-            ->count();
+        // First, sync all member statuses to database to ensure data is current
+        Member::all()->each(function($member) {
+            $member->syncStatus();
+        });
+
+        // Total all members
+        $totalMember = Member::count();
+
+        // Total member aktif (not expired)
+        $totalMemberAktif = Member::whereDate('expired_at', '>=', now())->count();
 
         // Member expired
-        $totalMemberExpired = Member::whereDate('expired_at', '<', now())
-            ->count();
+        $totalMemberExpired = Member::whereDate('expired_at', '<', now())->count();
 
-        // VIP member
+        // VIP member (not expired)
         $totalVip = Member::where('tipe', 'vip')
-            ->where('is_active', true)
+            ->whereDate('expired_at', '>=', now())
             ->count();
 
         /*
@@ -179,6 +184,7 @@ class DashboardController extends Controller
             'pendapatanBulanIni',
 
             // member stats
+            'totalMember',
             'totalMemberAktif',
             'totalMemberExpired',
             'totalVip',

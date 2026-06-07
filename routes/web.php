@@ -117,6 +117,12 @@ Route::get('/masuk', function () {
 
 })->name('masuk.form');
 
+Route::get('/masuk/member-scan', function () {
+
+    return view('parkir.masuk_member');
+
+})->name('parkir.masuk.member');
+
 /*
 |--------------------------------------------------------------------------
 | SCAN QR
@@ -149,6 +155,17 @@ Route::post(
     '/parkir/keluar-plat',
     [ParkirController::class, 'keluarByPlat']
 )->name('parkir.keluarByPlat');
+
+Route::get(
+    '/parkir/{id}/verifikasi',
+    [ParkirController::class, 'showVerifikasi']
+)->name('parkir.verifikasi');
+
+Route::post(
+    '/parkir/{id}/verifikasi',
+    [ParkirController::class, 'prosesVerifikasi']
+)->name('parkir.prosesVerifikasi');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -223,6 +240,11 @@ Route::get(
     '/members/{id}',
     [MemberController::class, 'show']
 )->name('members.show');
+
+Route::get(
+    '/members/generate',
+    [MemberController::class, 'generate']
+)->name('members.generate');
 
 Route::get(
     '/members/{id}/edit',

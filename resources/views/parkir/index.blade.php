@@ -372,7 +372,11 @@
                                 @endif
                             </td>
                             <td>
-                                @if($p->biaya)
+                                @if($p->status_member)
+                                    <span class="fw-semibold text-biaya">
+                                        <i class="fas fa-crown me-1" style="color:#f59e0b;"></i> MEMBER
+                                    </span>
+                                @elseif($p->biaya)
                                     <span class="fw-semibold text-biaya">
                                         Rp {{ number_format($p->biaya, 0, ',', '.') }}
                                     </span>

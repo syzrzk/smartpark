@@ -149,7 +149,11 @@
         <div class="divider"></div>
 
         <h1>
-            Rp {{ number_format($biaya, 0, ',', '.') }}
+            @if($parkir->status_member)
+                💚 GRATIS (MEMBER)
+            @else
+                Rp {{ number_format($biaya, 0, ',', '.') }}
+            @endif
         </h1>
 
         {{-- BUTTON BAYAR --}}

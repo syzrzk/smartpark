@@ -220,6 +220,39 @@
        {{-- ═══════ ROW 2: MEMBER STATS ═══════ --}}
 <div class="row g-3 mb-4">
 
+    {{-- TOTAL MEMBER --}}
+    <div class="col-xl-12 col-md-12">
+        <div class="stat-card card-blue h-100">
+
+            <div class="d-flex align-items-center justify-content-between">
+
+                <div>
+                    <div class="stat-label">
+                        Total Member
+                    </div>
+
+                    <div class="stat-value">
+                        {{ $totalMember }}
+                    </div>
+
+                    <div class="stat-sub">
+                        semua member terdaftar
+                    </div>
+                </div>
+
+                <div class="icon-wrap" style="background:#eff6ff;">
+                    <i class="fas fa-users" style="color:#3b82f6;"></i>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div class="row g-3 mb-4">
+
     {{-- MEMBER AKTIF --}}
     <div class="col-xl-4 col-md-4">
         <div class="stat-card card-green h-100">
@@ -424,7 +457,11 @@
                                     @else - @endif
                                 </td>
                                 <td class="fw-semibold" style="color:#10b981;">
-                                    Rp {{ number_format($t->biaya, 0, ',', '.') }}
+                                    @if($t->status_member)
+                                        <i class="fas fa-crown me-1" style="color:#f59e0b;"></i> MEMBER
+                                    @else
+                                        Rp {{ number_format($t->biaya, 0, ',', '.') }}
+                                    @endif
                                 </td>
                             </tr>
                             @empty

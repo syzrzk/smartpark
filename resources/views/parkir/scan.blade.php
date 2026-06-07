@@ -128,14 +128,8 @@
 
     {{-- TAB BAR --}}
     <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('qr', this)">
+        <button class="tab-btn active">
             <i class="fas fa-qrcode"></i> Scan QR
-        </button>
-        <button class="tab-btn" onclick="switchTab('plat', this)">
-            <i class="fas fa-hashtag"></i> Plat Nomor
-        </button>
-        <button class="tab-btn" onclick="switchTab('foto', this)">
-            <i class="fas fa-camera"></i> Upload Foto
         </button>
     </div>
 
@@ -161,64 +155,6 @@
                     <button class="btn-icon" onclick="submitQr(document.getElementById('manualQr').value)">
                         <i class="fas fa-arrow-right"></i>
                     </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    {{-- ═══ TAB 2: PLAT NOMOR ═══ --}}
-    <div id="tab-plat" class="tab-panel">
-        <div class="panel-card">
-            <div class="panel-header">
-                <div class="title"><i class="fas fa-car me-2" style="color:#ef4444;"></i>Cari by Plat Nomor</div>
-                <div class="subtitle">Masukkan plat nomor kendaraan yang akan keluar</div>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="{{ route('parkir.keluarByPlat') }}">
-                    @csrf
-                    <div class="sec-label"><i class="fas fa-hashtag me-1"></i>Plat Nomor Kendaraan</div>
-                    <input type="text"
-                           name="plat_nomor"
-                           class="form-input form-input-upper"
-                           placeholder="Contoh: B 1234 ABC"
-                           maxlength="15"
-                           required
-                           autocomplete="off">
-                    <div style="font-size:11px;color:#334155;margin-bottom:16px;margin-top:-6px;">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Hanya kendaraan dengan status "Masuk" yang dapat diproses.
-                    </div>
-                    <button type="submit" class="btn-red">
-                        <i class="fas fa-search me-2"></i> Cari & Proses Keluar
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    {{-- ═══ TAB 3: UPLOAD FOTO ═══ --}}
-    <div id="tab-foto" class="tab-panel">
-        <div class="panel-card">
-            <div class="panel-header">
-                <div class="title"><i class="fas fa-image me-2" style="color:#ef4444;"></i>Upload Foto QR Code</div>
-                <div class="subtitle">Upload foto tiket/QR code, sistem akan memindainya secara otomatis</div>
-            </div>
-            <div class="panel-body">
-                {{-- Upload area --}}
-                <div class="sec-label"><i class="fas fa-upload me-1"></i>Pilih Foto Tiket / QR Code</div>
-                <div class="upload-zone" id="uploadZone">
-                    <input type="file" id="fotoPlat" accept="image/jpeg,image/png,image/webp,image/jpg" onchange="previewFoto(this)">
-                    <div id="uzContent">
-                        <div class="uz-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                        <div class="uz-label">Klik atau drag foto ke sini</div>
-                        <div class="uz-sub">JPG, PNG, WEBP &bull; Maks 5MB</div>
-                    </div>
-                </div>
-                <img id="fotoPreview" class="upload-preview" alt="Preview foto plat">
-
-                {{-- Scan Result Status --}}
-                <div id="fotoScanStatus" style="display:none; text-align:center; margin-top:16px;">
-                    <i class="fas fa-spinner fa-spin me-2 text-blue-500"></i> Memindai gambar...
                 </div>
             </div>
         </div>
@@ -399,9 +335,6 @@ function previewFoto(input) {
     reader.readAsDataURL(file);
 }
 </script>
-
-<!-- Library jsQR untuk parsing gambar QR yang super cepat -->
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

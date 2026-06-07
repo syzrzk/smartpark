@@ -12,7 +12,9 @@ class Parkir extends Model
         'waktu_keluar',
         'qr_code',
         'status',
-        'biaya'
+        'biaya',
+        'foto_masuk',
+        'status_member'
     ];
     // app/Models/Parkir.php
 

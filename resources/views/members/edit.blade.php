@@ -6,10 +6,10 @@
     {{-- HEADER --}}
     <div class="mb-4">
         <h2 class="fw-bold mb-1" style="color: #000000 !important;">
-            Tambah Member
+            Edit Member
         </h2>
         <p class="mb-0" style="color: #000000 !important; opacity: 0.7;">
-            Tambahkan member parkir baru
+            Perbarui data member parkir aktif
         </p>
     </div>
 
@@ -25,10 +25,11 @@
         <div class="card-body p-4">
 
             {{-- FORM --}}
-            <form action="{{ route('member.store') }}"
+            <form action="{{ route('members.update', $member->id) }}"
                   method="POST">
 
                 @csrf
+                @method('PUT')
 
                 <div class="row g-4">
 
@@ -41,6 +42,7 @@
                                name="nama"
                                class="form-control form-input-custom"
                                placeholder="Masukkan nama member"
+                               value="{{ old('nama', $member->nama) }}"
                                required>
                     </div>
 
@@ -53,6 +55,7 @@
                                name="plat_nomor"
                                class="form-control form-input-custom text-uppercase"
                                placeholder="Contoh: B 1234 ABC"
+                               value="{{ old('plat_nomor', $member->plat_nomor) }}"
                                required>
                     </div>
 
@@ -63,10 +66,10 @@
                         </label>
                         <select name="jenis_kendaraan"
                                 class="form-select form-input-custom">
-                            <option value="motor">
+                            <option value="motor" {{ $member->jenis_kendaraan == 'motor' ? 'selected' : '' }}>
                                 Motor
                             </option>
-                            <option value="mobil">
+                            <option value="mobil" {{ $member->jenis_kendaraan == 'mobil' ? 'selected' : '' }}>
                                 Mobil
                             </option>
                         </select>
@@ -79,10 +82,10 @@
                         </label>
                         <select name="tipe"
                                 class="form-select form-input-custom">
-                            <option value="bulanan">
+                            <option value="bulanan" {{ $member->tipe == 'bulanan' ? 'selected' : '' }}>
                                 Bulanan
                             </option>
-                            <option value="vip">
+                            <option value="vip" {{ $member->tipe == 'vip' ? 'selected' : '' }}>
                                 VIP
                             </option>
                         </select>
@@ -96,7 +99,7 @@
                         <input type="date"
                                name="expired_at"
                                class="form-control form-input-custom"
-                               value="{{ date('Y-m-d', strtotime('+1 month')) }}"
+                               value="{{ old('expired_at', \Carbon\Carbon::parse($member->expired_at)->format('Y-m-d')) }}"
                                required>
                     </div>
 
@@ -106,8 +109,8 @@
                 <div class="mt-5 d-flex gap-3">
                     <button type="submit"
                             class="btn btn-primary px-4 py-2.5 btn-submit-custom">
-                        <i class="fas fa-credit-card me-2"></i>
-                        Lanjut Pembayaran
+                        <i class="fas fa-save me-2"></i>
+                        Simpan Perubahan
                     </button>
 
                     <a href="{{ route('members.index') }}"

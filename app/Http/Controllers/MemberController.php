@@ -278,4 +278,14 @@ class MemberController extends Controller
                 'Member berhasil dihapus'
             );
     }
+
+    /**
+     * =========================================================
+     * HALAMAN GENERATE QR MEMBER
+     * =========================================================
+     */
+    public function generate()
+    {
+        return view('members.generate');
+    }
 }

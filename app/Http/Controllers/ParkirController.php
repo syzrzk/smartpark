@@ -93,23 +93,67 @@ class ParkirController extends Controller
      */
     public function masuk(Request $request)
     {
-        $plat = strtoupper(trim($request->plat_nomor ?? ''));
+        $memberQrCode = trim($request->input('member_qr_code', ''));
+        $fotoPath = null;
 
-        if (empty($plat)) {
-            $plat = 'AUTO-' . rand(1000, 9999);
+        if ($request->filled('foto_masuk_data')) {
+            $imageData = $request->input('foto_masuk_data');
+            if (str_contains($imageData, ',')) {
+                $imageData = substr($imageData, strpos($imageData, ',') + 1);
+            }
+            $imageData  = base64_decode($imageData);
+            $folderPath = public_path('uploads/parkir');
+            if (!file_exists($folderPath)) {
+                mkdir($folderPath, 0755, true);
+            }
+            $filename  = 'masuk_' . time() . '_' . uniqid() . '.jpg';
+            $fotoPath  = 'uploads/parkir/' . $filename;
+            file_put_contents(public_path($fotoPath), $imageData);
         }
 
-        $kendaraan = Kendaraan::create([
-            'jenis_kendaraan' => $request->jenis_kendaraan,
-            'plat_nomor' => $plat,
-        ]);
+        $kendaraanData = [
+            'jenis_kendaraan' => 'unknown',
+            'plat_nomor'      => 'PENDING-' . time(),
+        ];
 
-        $parkir = Parkir::create([
-            'kendaraan_id' => $kendaraan->id,
-            'waktu_masuk' => now(),
-            'qr_code' => uniqid(),
-            'status' => 'masuk',
-        ]);
+        $parkirData = [
+            'waktu_masuk'  => now(),
+            'qr_code'      => uniqid(),
+            'status'       => 'masuk',
+            'foto_masuk'   => $fotoPath,
+            'status_member' => false,
+        ];
+
+        if ($memberQrCode && str_starts_with($memberQrCode, 'MEMBER-')) {
+            $memberPlat = strtoupper(trim(substr($memberQrCode, 7)));
+            $member = Member::where('plat_nomor', $memberPlat)->first();
+
+            // Sync member status based on expired_at date
+            if ($member) {
+                $member->syncStatus();
+            }
+
+            // Check if member is actually active
+            $member = Member::where('plat_nomor', $memberPlat)
+                ->whereDate('expired_at', '>=', now())
+                ->where('is_active', true)
+                ->first();
+
+            if ($member) {
+                $kendaraanData = [
+                    'jenis_kendaraan' => $member->jenis_kendaraan,
+                    'plat_nomor'      => $memberPlat,
+                ];
+                $parkirData['status_member'] = true;
+            }
+        }
+
+        $kendaraan = Kendaraan::create($kendaraanData);
+
+        $parkir = Parkir::create(array_merge(
+            ['kendaraan_id' => $kendaraan->id],
+            $parkirData
+        ));
 
         return redirect()->route('tiket', $parkir->id);
     }
@@ -137,7 +181,46 @@ class ParkirController extends Controller
      */
     public function keluar(Request $request)
     {
-        $parkir = Parkir::where('qr_code', $request->qr_code)
+        $qrCode = trim($request->qr_code);
+
+        // Jika memindai ID Card Member, proses langsung gratis
+        if (str_starts_with($qrCode, 'MEMBER-')) {
+            $plat = strtoupper(substr($qrCode, 7));
+            
+            // Sync member status based on expired_at date
+            $memberRecord = Member::where('plat_nomor', $plat)->first();
+            if ($memberRecord) {
+                $memberRecord->syncStatus();
+            }
+
+            $parkir = Parkir::where('status', 'masuk')
+                ->whereHas('kendaraan', function ($q) use ($plat) {
+                    $q->where('plat_nomor', $plat);
+                })
+                ->with('kendaraan')
+                ->latest()
+                ->first();
+
+            if (!$parkir) {
+                return redirect()->route('parkir.scan')
+                    ->with('error', 'Kendaraan member tidak ditemukan atau sudah keluar');
+            }
+
+            // Proses keluar langsung untuk member
+            $waktuKeluar = now();
+            $durasi = max(1, ceil(Carbon::parse($parkir->waktu_masuk)->diffInMinutes($waktuKeluar) / 60));
+            $parkir->waktu_keluar  = $waktuKeluar;
+            $parkir->durasi_jam    = $durasi;
+            $parkir->biaya         = 0;
+            $parkir->status        = 'keluar';
+            $parkir->status_member = true;
+            $parkir->save();
+
+            return redirect()->route('bayar.sukses', $parkir->id);
+        }
+
+        // Tiket reguler — cari parkir via QR lalu arahkan ke verifikasi
+        $parkir = Parkir::where('qr_code', $qrCode)
             ->with('kendaraan')
             ->first();
 
@@ -151,65 +234,99 @@ class ParkirController extends Controller
                 ->with('error', 'Kendaraan sudah keluar');
         }
 
-        $waktuKeluar = now();
+        // Arahkan ke halaman verifikasi plat nomor
+        return redirect()->route('parkir.verifikasi', $parkir->id);
+    }
 
-        $durasi = max(
-            1,
-            ceil(
-                Carbon::parse($parkir->waktu_masuk)
-                    ->diffInMinutes($waktuKeluar) / 60
-            )
-        );
+    /**
+     * =========================================================
+     * VERIFIKASI PLAT NOMOR KELUAR
+     * =========================================================
+     */
+    public function showVerifikasi($id)
+    {
+        $parkir = Parkir::with('kendaraan')->findOrFail($id);
 
-        $jenis = optional($parkir->kendaraan)->jenis_kendaraan;
-
-        if (!$jenis) {
+        if ($parkir->status == 'keluar') {
             return redirect()->route('parkir.scan')
-                ->with('error', 'Jenis kendaraan tidak ditemukan');
+                ->with('error', 'Kendaraan sudah keluar');
         }
 
-        $member = Member::where(
-            'plat_nomor',
-            $parkir->kendaraan->plat_nomor
-        )
-        ->whereDate('expired_at', '>=', now())
-        ->first();
+        return view('parkir.verifikasi', compact('parkir'));
+    }
+
+    /**
+     * =========================================================
+     * PROSES VERIFIKASI & CHECKOUT
+     * =========================================================
+     */
+    public function prosesVerifikasi(Request $request, $id)
+    {
+        $request->validate([
+            'plat_nomor'      => 'required|string',
+            'jenis_kendaraan' => 'required|in:motor,mobil',
+        ]);
+
+        $parkir = Parkir::with('kendaraan')->findOrFail($id);
+
+        if ($parkir->status == 'keluar') {
+            return redirect()->route('parkir.scan')
+                ->with('error', 'Kendaraan sudah keluar');
+        }
+
+        $platKeluar = strtoupper(trim($request->plat_nomor));
+        $jenis      = $request->jenis_kendaraan;
+
+        // Update data kendaraan dengan plat nomor dan jenis kendaraan yang sebenarnya
+        $parkir->kendaraan->update([
+            'plat_nomor'      => $platKeluar,
+            'jenis_kendaraan' => $jenis,
+        ]);
+
+        $waktuKeluar = now();
+        $durasi = max(1, ceil(
+            Carbon::parse($parkir->waktu_masuk)->diffInMinutes($waktuKeluar) / 60
+        ));
+
+        // Cek member aktif
+        $member = Member::where('plat_nomor', $platKeluar)
+            ->whereDate('expired_at', '>=', now())
+            ->first();
 
         if ($member) {
-
             $biaya = 0;
             $parkir->status_member = true;
-
         } else {
-
             $biaya = $this->hitungBiaya($jenis, $durasi);
             $parkir->status_member = false;
         }
 
         $parkir->waktu_keluar = $waktuKeluar;
-        $parkir->durasi_jam = $durasi;
-        $parkir->biaya = $biaya;
-        $parkir->status = 'keluar';
-
+        $parkir->durasi_jam   = $durasi;
+        $parkir->biaya        = $biaya;
+        $parkir->status       = 'keluar';
         $parkir->save();
 
-        Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        // Jika member, langsung sukses
+        if ($biaya <= 0) {
+            return redirect()->route('bayar.sukses', $parkir->id);
+        }
+
+        Config::$serverKey    = env('MIDTRANS_SERVER_KEY');
         Config::$isProduction = false;
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        Config::$isSanitized  = true;
+        Config::$is3ds        = true;
 
-       $params = [
+        $params = [
+            'transaction_details' => [
+                'order_id'     => 'PARKIR-' . $parkir->id . '-' . time(),
+                'gross_amount' => $biaya,
+            ],
+            'callbacks' => [
+                'finish' => route('bayar.sukses', $parkir->id),
+            ],
+        ];
 
-    'transaction_details' => [
-        'order_id' => 'PARKIR-' . $parkir->id . '-' . time(),
-        'gross_amount' => $biaya,
-    ],
-
-    'callbacks' => [
-        'finish' => route('bayar.sukses', $parkir->id)
-    ]
-
-];
         $snapToken = Snap::getSnapToken($params);
 
         return view('parkir.bayar', compact(

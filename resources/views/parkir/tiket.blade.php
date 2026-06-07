@@ -154,15 +154,32 @@
                 <span>#{{ $parkir->id }}</span>
             </div>
 
+            @if($parkir->status_member)
+            <div>
+                <span>Member</span>
+                <span style="color:#22c55e;font-weight:700;">Aktif</span>
+            </div>
+            @endif
+
+            @if($parkir->kendaraan && !in_array($parkir->kendaraan->jenis_kendaraan, ['unknown', 'Unknown', '']))
             <div>
                 <span>Jenis</span>
-                <span>{{ $parkir->kendaraan->jenis_kendaraan ?? '-' }}</span>
+                <span>{{ $parkir->kendaraan->jenis_kendaraan }}</span>
             </div>
+            @endif
+
+            @if($parkir->kendaraan && $parkir->kendaraan->plat_nomor && !str_contains($parkir->kendaraan->plat_nomor, 'PENDING-'))
+            <div>
+                <span>Plat</span>
+                <span>{{ strtoupper($parkir->kendaraan->plat_nomor) }}</span>
+            </div>
+            @endif
 
             <div>
                 <span>Masuk</span>
                 <span>{{ \Carbon\Carbon::parse($parkir->waktu_masuk)->format('H:i') }}</span>
             </div>
+
         </div>
 
         <!-- BUTTON -->

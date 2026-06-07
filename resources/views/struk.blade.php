@@ -155,7 +155,11 @@
     <div class="line"></div>
 
     <div class="total">
-        TOTAL: Rp {{ number_format($parkir->biaya ?? 0) }}
+        @if($parkir->status_member)
+            TOTAL: 💚 GRATIS (MEMBER)
+        @else
+            TOTAL: Rp {{ number_format($parkir->biaya ?? 0) }}
+        @endif
     </div>
 
     <div class="line"></div>
