@@ -1,4 +1,59 @@
 <x-app-layout>
+    <style>
+        .form-card {
+            background: white;
+            border-radius: 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .dark .form-card {
+            background: #0f172a;
+            border-color: #334155;
+        }
+        .form-card-header {
+            background: linear-gradient(to right, #eff6ff, #dbeafe);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .dark .form-card-header {
+            background: linear-gradient(to right, #0f172a, #1e293b);
+            border-bottom-color: #334155;
+        }
+        .form-header-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25);
+        }
+        .form-header-text h3 {
+            margin: 0;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .dark .form-header-text h3 {
+            color: #f8fafc;
+        }
+        .form-header-text p {
+            margin: 4px 0 0 0;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+        .dark .form-header-text p {
+            color: #cbd5e1;
+        }
+    </style>
+
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
@@ -12,7 +67,16 @@
 
     <div class="py-8">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+            <div class="form-card">
+                <div class="form-card-header">
+                    <div class="form-header-icon">
+                        <i class="fas fa-user-plus text-lg"></i>
+                    </div>
+                    <div class="form-header-text">
+                        <h3>{{ isset($user) ? 'Edit Data Petugas' : 'Tambah Petugas Baru' }}</h3>
+                        <p>Isi data petugas dengan tampilan yang konsisten di seluruh halaman manajemen.</p>
+                    </div>
+                </div>
                 <div class="p-8">
                     
                     @if ($errors->any())
