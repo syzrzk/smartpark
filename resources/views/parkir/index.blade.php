@@ -38,17 +38,29 @@
             border-bottom: 1px solid #334155;
         }
 
+        .table-responsive-custom {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table {
+            min-width: 1000px;
+        }
+
         .table thead th {
             background: #f8fafc;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #64748b;
             border-bottom: 2px solid #e2e8f0;
-            padding: 12px 14px;
+            padding: 14px 10px;
             text-align: center;
             white-space: nowrap;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         .dark .table thead th, .dark table.dataTable thead th {
             background: #0f172a !important; 
@@ -63,12 +75,13 @@
         .dark .table tbody tr:hover { background: #334155; }
 
         .table tbody td {
-            padding: 11px 14px;
+            padding: 12px 10px;
             vertical-align: middle;
             font-size: 13px;
             color: #334155;
             text-align: center;
-            white-space: nowrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
             border-color: #f1f5f9;
             background-color: transparent !important;
             box-shadow: none !important;
@@ -105,9 +118,6 @@
           white-space: nowrap;
         }
 
-        td:nth-child(2) {
-        min-width: 220px;
-        }
         .btn-detail  { background: #dbeafe; color: #1d4ed8; }
         .btn-detail:hover { background: #bfdbfe; color: #1d4ed8; }
 
@@ -268,19 +278,19 @@
             </div>
 
             {{-- Table --}}
-            <div class="p-0">
+            <div class="table-responsive-custom">
                 <table id="tabelKendaraan" class="table table-hover mb-0 w-100">
                     <thead>
                         <tr>
-                            <th style="width:44px;">#</th>
-                            <th style="width:160px;">Aksi</th>
-                            <th>Plat Nomor</th>
-                            <th>Jenis</th>
-                            <th>Waktu Masuk</th>
-                            <th>Waktu Keluar</th>
-                            <th>Durasi</th>
-                            <th>Biaya</th>
-                            <th>Status</th>
+                            <th style="width:50px; min-width:50px;">#</th>
+                            <th style="width:200px; min-width:200px;">Aksi</th>
+                            <th style="width:130px; min-width:130px;">Plat Nomor</th>
+                            <th style="width:100px; min-width:100px;">Jenis</th>
+                            <th style="width:150px; min-width:150px;">Waktu Masuk</th>
+                            <th style="width:150px; min-width:150px;">Waktu Keluar</th>
+                            <th style="width:90px; min-width:90px;">Durasi</th>
+                            <th style="width:140px; min-width:140px;">Biaya</th>
+                            <th style="width:100px; min-width:100px;">Status</th>
                         </tr>
                     </thead>
                     <tbody>
