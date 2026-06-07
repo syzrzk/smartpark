@@ -12,22 +12,6 @@ class ReportingController extends Controller
 {
     /**
      * =========================================================
-     * CONSTRUCTOR
-     * =========================================================
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware(function ($request, $next) {
-            if (auth()->user()->role !== 'admin') {
-                abort(403, 'Unauthorized access');
-            }
-            return $next($request);
-        });
-    }
-
-    /**
-     * =========================================================
      * HALAMAN LAPORAN
      * =========================================================
      */

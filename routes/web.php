@@ -350,7 +350,10 @@ Route::middleware(['auth'])->group(function () {
         [ParkirController::class, 'destroy']
     )->name('parkir.destroy');
 
-    // Reporting Routes
+});
+
+// Reporting Routes (Admin Only)
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get(
         '/reporting',
         [ReportingController::class, 'index']
@@ -360,6 +363,9 @@ Route::middleware(['auth'])->group(function () {
         '/reporting/download-pdf',
         [ReportingController::class, 'downloadPdf']
     )->name('reporting.download-pdf');
+});
+
+Route::middleware(['auth'])->group(function () {
 
     Route::get(
         '/profile',
