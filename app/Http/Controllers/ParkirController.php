@@ -111,8 +111,14 @@ class ParkirController extends Controller
             file_put_contents(public_path($fotoPath), $imageData);
         }
 
+        $validated = $request->validate([
+            'jenis_kendaraan' => 'required_without:member_qr_code|in:motor,mobil',
+            'foto_masuk_data' => 'nullable|string',
+            'member_qr_code' => 'nullable|string',
+        ]);
+
         $kendaraanData = [
-            'jenis_kendaraan' => 'unknown',
+            'jenis_kendaraan' => $validated['jenis_kendaraan'],
             'plat_nomor'      => 'PENDING-' . time(),
         ];
 
