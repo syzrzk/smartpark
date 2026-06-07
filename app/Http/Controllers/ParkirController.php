@@ -117,18 +117,9 @@ class ParkirController extends Controller
             'member_qr_code' => 'nullable|string',
         ]);
 
-        $kendaraanData = [
-            'jenis_kendaraan' => $validated['jenis_kendaraan'],
-            'plat_nomor'      => 'PENDING-' . time(),
-        ];
-
-        $parkirData = [
-            'waktu_masuk'  => now(),
-            'qr_code'      => uniqid(),
-            'status'       => 'masuk',
-            'foto_masuk'   => $fotoPath,
-            'status_member' => false,
-        ];
+        // Check member first to determine jenis_kendaraan
+        $jenisKendaraan = null;
+        $isMember = false;
 
         if ($memberQrCode && str_starts_with($memberQrCode, 'MEMBER-')) {
             $memberPlat = strtoupper(trim(substr($memberQrCode, 7)));
@@ -146,13 +137,30 @@ class ParkirController extends Controller
                 ->first();
 
             if ($member) {
-                $kendaraanData = [
-                    'jenis_kendaraan' => $member->jenis_kendaraan,
-                    'plat_nomor'      => $memberPlat,
-                ];
-                $parkirData['status_member'] = true;
+                $jenisKendaraan = $member->jenis_kendaraan;
+                $isMember = true;
             }
         }
+
+        // If not member or member not found, use form input
+        if (!$jenisKendaraan) {
+            $jenisKendaraan = $validated['jenis_kendaraan'] ?? 'unknown';
+        }
+
+        $kendaraanData = [
+            'jenis_kendaraan' => $jenisKendaraan,
+            'plat_nomor'      => $memberQrCode && str_starts_with($memberQrCode, 'MEMBER-') 
+                ? strtoupper(trim(substr($memberQrCode, 7)))
+                : 'PENDING-' . time(),
+        ];
+
+        $parkirData = [
+            'waktu_masuk'  => now(),
+            'qr_code'      => uniqid(),
+            'status'       => 'masuk',
+            'foto_masuk'   => $fotoPath,
+            'status_member' => $isMember,
+        ];
 
         $kendaraan = Kendaraan::create($kendaraanData);
 
