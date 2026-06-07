@@ -350,7 +350,7 @@ Route::middleware(['auth'])->group(function () {
         [ParkirController::class, 'destroy']
     )->name('parkir.destroy');
 
-    {{-- Reporting Routes --}}
+    // Reporting Routes
     Route::get(
         '/reporting',
         [ReportingController::class, 'index']
