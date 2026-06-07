@@ -1,0 +1,47 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="#1f2937" stroke="#3b82f6" stroke-width="3"/>
+  
+  <!-- Gradient defs -->
+  <defs>
+    <linearGradient id="upbGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Main building/campus icon -->
+  <g transform="translate(100, 65)">
+    <!-- Building structure -->
+    <rect x="-25" y="-15" width="50" height="45" fill="url(#upbGradient)" rx="4"/>
+    <!-- Windows -->
+    <rect x="-20" y="-10" width="8" height="8" fill="white" opacity="0.8"/>
+    <rect x="-6" y="-10" width="8" height="8" fill="white" opacity="0.8"/>
+    <rect x="8" y="-10" width="8" height="8" fill="white" opacity="0.8"/>
+    <rect x="-20" y="3" width="8" height="8" fill="white" opacity="0.8"/>
+    <rect x="-6" y="3" width="8" height="8" fill="white" opacity="0.8"/>
+    <rect x="8" y="3" width="8" height="8" fill="white" opacity="0.8"/>
+    <rect x="-20" y="16" width="8" height="8" fill="white" opacity="0.7"/>
+    <rect x="-6" y="16" width="8" height="8" fill="white" opacity="0.7"/>
+    <rect x="8" y="16" width="8" height="8" fill="white" opacity="0.7"/>
+    <!-- Door -->
+    <rect x="-6" y="26" width="12" height="15" fill="white" opacity="0.6"/>
+  </g>
+  
+  <!-- Book/Education symbol -->
+  <g transform="translate(100, 125)">
+    <path d="M -18 -5 L -8 -8 L -8 10 L -18 7 Z M 18 -5 L 8 -8 L 8 10 L 18 7 Z" fill="url(#accentGradient)"/>
+    <rect x="-8" y="-8" width="16" height="18" fill="url(#upbGradient)"/>
+    <line x1="-8" y1="2" x2="8" y2="2" stroke="white" stroke-width="1" opacity="0.6"/>
+  </g>
+  
+  <!-- Text: UPB -->
+  <text x="100" y="170" font-size="24" font-weight="bold" fill="#3b82f6" text-anchor="middle" font-family="Arial, sans-serif">UPB</text>
+  
+  <!-- Decorative accent line -->
+  <line x1="60" y1="180" x2="140" y2="180" stroke="#3b82f6" stroke-width="2" opacity="0.5"/>
+</svg>

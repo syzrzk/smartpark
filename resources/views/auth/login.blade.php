@@ -216,38 +216,93 @@
         /* Logo area */
         .brand-area {
             text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 36px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* UPB Campus Logo */
+        .upb-logo {
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .upb-logo img {
+            height: 60px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        }
+
+        .upb-text {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 6px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* SmartPark Logo */
+        .smartpark-logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
         }
 
         .brand-icon {
-            width: 64px;
-            height: 64px;
+            width: 72px;
+            height: 72px;
             background: linear-gradient(135deg, #2563eb, #3b82f6);
-            border-radius: 18px;
+            border-radius: 20px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 24px rgba(37,99,235,0.4);
+            box-shadow: 0 12px 30px rgba(37,99,235,0.45);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-icon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
         }
 
         .brand-icon svg {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             fill: white;
+            position: relative;
+            z-index: 1;
         }
 
         .brand-name {
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 28px;
+            font-weight: 800;
             color: #f1f5f9;
             letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .brand-sub {
             font-size: 13px;
             color: #64748b;
-            margin-top: 4px;
+            margin-top: 0;
         }
 
         /* Form elements */
@@ -520,14 +575,29 @@
 
         <!-- Brand -->
         <div class="brand-area">
-            <div class="brand-icon">
-                <!-- Parking P icon -->
-                <svg viewBox="0 0 24 24" fill="white">
-                    <path d="M6 3h6a6 6 0 0 1 0 12H9v6H6V3zm3 9h3a3 3 0 0 0 0-6H9v6z"/>
-                </svg>
+            <!-- UPB Campus Logo -->
+            <div class="upb-logo">
+                <img src="{{ asset('assets/images/upb-logo.svg') }}" alt="UPB Logo" title="Universitas Pendidikan Bahasa">
             </div>
-            <div class="brand-name">SmartPark</div>
-            <div class="brand-sub">Sistem Manajemen Parkir Cerdas</div>
+            <div class="upb-text">Universitas Pendidikan Bahasa</div>
+
+            <!-- SmartPark Logo -->
+            <div class="smartpark-logo-section">
+                <div class="brand-icon">
+                    <!-- Professional Parking Logo -->
+                    <svg viewBox="0 0 24 24" fill="white">
+                        <g>
+                            <!-- Parking Sign P with gradient -->
+                            <circle cx="12" cy="8" r="6" fill="white" opacity="0.9"/>
+                            <path d="M9 8 Q9 5 12 5 Q15 5 15 8 M9 14 Q9 11 12 11 Q15 11 15 14 M9 14 L15 14" stroke="white" stroke-width="1.5" fill="none"/>
+                            <!-- Base -->
+                            <rect x="10" y="15" width="4" height="6" rx="1" fill="white"/>
+                        </g>
+                    </svg>
+                </div>
+                <div class="brand-name">SmartPark</div>
+                <div class="brand-sub">Sistem Manajemen Parkir Cerdas</div>
+            </div>
         </div>
 
         <!-- Error -->
