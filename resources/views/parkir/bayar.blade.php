@@ -161,6 +161,14 @@
             💳 Bayar Sekarang
         </button>
 
+        {{-- CASH PAYMENT BUTTON --}}
+        <form action="{{ route('parkir.bayarCash', $parkir->id) }}" method="POST" style="margin-top:10px;">
+            @csrf
+            <button type="submit" style="background: linear-gradient(135deg, #10b981, #059669);">
+                💵 Bayar Cash
+            </button>
+        </form>
+
     </div>
 
 </div>
