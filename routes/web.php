@@ -12,6 +12,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ParkirController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\TarifController;
 use App\Http\Controllers\UserController;
 
@@ -348,6 +349,17 @@ Route::middleware(['auth'])->group(function () {
         '/kendaraan/{id}',
         [ParkirController::class, 'destroy']
     )->name('parkir.destroy');
+
+    {{-- Reporting Routes --}}
+    Route::get(
+        '/reporting',
+        [ReportingController::class, 'index']
+    )->name('reporting.index');
+
+    Route::get(
+        '/reporting/download-pdf',
+        [ReportingController::class, 'downloadPdf']
+    )->name('reporting.download-pdf');
 
     Route::get(
         '/profile',
