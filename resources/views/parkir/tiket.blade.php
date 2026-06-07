@@ -116,6 +116,16 @@
             background: #475569;
         }
 
+        .btn-cash {
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            color: white;
+            font-weight: 600;
+        }
+
+        .btn-cash:hover {
+            background: linear-gradient(135deg, #059669, #047857) !important;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -188,6 +198,14 @@
             <button onclick="downloadQR()" class="btn btn-download" style="width:100%; border:none; cursor:pointer;">
                 <i class="fa fa-download"></i> Download QR
             </button>
+
+            {{-- Cash Payment Button --}}
+            <form action="{{ route('parkir.bayarCash', $parkir->id) }}" method="POST" style="margin:5px 0;">
+                @csrf
+                <button type="submit" class="btn btn-cash" style="width:100%; border:none; cursor:pointer;">
+                    <i class="fa fa-money-bill-wave"></i> Bayar Cash
+                </button>
+            </form>
 
             <a href="{{ route('parkir.scan') }}" class="btn btn-scan">
                 <i class="fa fa-qrcode"></i> Scan QR Keluar

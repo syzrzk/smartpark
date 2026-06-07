@@ -611,6 +611,51 @@ public function keluarByPlat(Request $request)
 
     /**
      * =========================================================
+     * PEMBAYARAN CASH
+     * =========================================================
+     */
+    public function bayarCash($id)
+    {
+        $parkir = Parkir::with('kendaraan')->find($id);
+
+        if (!$parkir) {
+            return back()->with('error', 'Data parkir tidak ditemukan');
+        }
+
+        if ($parkir->status === 'keluar') {
+            return back()->with('error', 'Kendaraan sudah keluar');
+        }
+
+        // Hitung durasi dan biaya
+        $durasi = max(
+            1,
+            ceil(
+                Carbon::parse($parkir->waktu_masuk)
+                    ->diffInMinutes(now()) / 60
+            )
+        );
+
+        $jenis = $parkir->kendaraan->jenis_kendaraan;
+
+        if ($parkir->status_member) {
+            $biaya = 0;
+        } else {
+            $biaya = $this->hitungBiaya($jenis, $durasi);
+        }
+
+        // Update parkir dengan status keluar dan biaya
+        $parkir->update([
+            'status' => 'keluar',
+            'waktu_keluar' => now(),
+            'biaya' => $biaya,
+        ]);
+
+        // Redirect ke struk
+        return redirect()->route('struk', $parkir->id);
+    }
+
+    /**
+     * =========================================================
      * HALAMAN STRUK
      * =========================================================
      */

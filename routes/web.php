@@ -178,6 +178,11 @@ Route::post(
     [ParkirController::class, 'bayar']
 )->name('bayar');
 
+Route::post(
+    '/bayar-cash/{id}',
+    [ParkirController::class, 'bayarCash']
+)->name('parkir.bayarCash');
+
 Route::get(
     '/bayar/sukses/{id}',
     [ParkirController::class, 'sukses']
