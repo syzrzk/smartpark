@@ -52,6 +52,65 @@
         .dark .form-header-text p {
             color: #cbd5e1;
         }
+
+        .form-label {
+            display: inline-block;
+            margin-bottom: 0.55rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+        }
+        .dark .form-label {
+            color: #cbd5e1;
+        }
+
+        .input-group {
+            display: block;
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 3rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 1rem;
+            background: #f8fafc;
+            color: #0f172a;
+            font-size: 0.95rem;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            min-height: 3.5rem;
+        }
+        .dark .form-input {
+            background: rgba(255,255,255,0.04);
+            border-color: #475569;
+            color: #f8fafc;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.16);
+            background: #ffffff;
+        }
+        .dark .form-input:focus {
+            background: #1e293b;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .form-note {
+            margin-top: 0.35rem;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .dark .form-note {
+            color: #94a3b8;
+        }
     </style>
 
     <x-slot name="header">
@@ -124,47 +183,47 @@
                             </div>
 
                             <!-- Kolom Kanan: Form Data -->
-                            <div class="md:col-span-2 space-y-5">
+                            <div class="md:col-span-2 space-y-6">
                                 <div>
-                                    <label for="name" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">Nama Lengkap</label>
-                                    <div class="relative">
+                                    <label for="name" class="form-label">Nama Lengkap</label>
+                                    <div class="input-group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <i class="fas fa-user text-gray-400"></i>
+                                            <i class="fas fa-user input-icon"></i>
                                         </div>
-                                        <input type="text" name="name" id="name" value="{{ old('name', $user->name ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 dark:bg-gray-700/50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition" placeholder="Masukkan nama lengkap" required>
+                                        <input type="text" name="name" id="name" value="{{ old('name', $user->name ?? '') }}" class="form-input" placeholder="Masukkan nama lengkap" required>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label for="email" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">Alamat Email</label>
-                                    <div class="relative">
+                                    <label for="email" class="form-label">Alamat Email</label>
+                                    <div class="input-group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <i class="fas fa-envelope text-gray-400"></i>
+                                            <i class="fas fa-envelope input-icon"></i>
                                         </div>
-                                        <input type="email" name="email" id="email" value="{{ old('email', $user->email ?? '') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 dark:bg-gray-700/50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition" placeholder="email@contoh.com" required>
+                                        <input type="email" name="email" id="email" value="{{ old('email', $user->email ?? '') }}" class="form-input" placeholder="email@contoh.com" required>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label for="password" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
-                                    <div class="relative">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <i class="fas fa-lock text-gray-400"></i>
+                                            <i class="fas fa-lock input-icon"></i>
                                         </div>
-                                        <input type="password" name="password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 dark:bg-gray-700/50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition" placeholder="{{ isset($user) ? 'Kosongkan jika tidak ingin diubah' : 'Minimal 6 karakter' }}" {{ isset($user) ? '' : 'required' }}>
+                                        <input type="password" name="password" id="password" class="form-input" placeholder="{{ isset($user) ? 'Kosongkan jika tidak ingin diubah' : 'Minimal 6 karakter' }}" {{ isset($user) ? '' : 'required' }}>
                                     </div>
                                     @if(isset($user))
-                                        <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400"><i class="fas fa-info-circle mr-1"></i>Abaikan field ini jika tidak ingin mengganti password.</p>
+                                        <p class="form-note"><i class="fas fa-info-circle mr-1"></i>Abaikan field ini jika tidak ingin mengganti password.</p>
                                     @endif
                                 </div>
 
                                 <div>
-                                    <label for="role" class="block mb-1.5 text-sm font-medium text-gray-700 dark:text-gray-300">Hak Akses (Role)</label>
-                                    <div class="relative">
+                                    <label for="role" class="form-label">Hak Akses (Role)</label>
+                                    <div class="input-group">
                                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                            <i class="fas fa-id-badge text-gray-400"></i>
+                                            <i class="fas fa-id-badge input-icon"></i>
                                         </div>
-                                        <select name="role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-3 dark:bg-gray-700/50 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white transition appearance-none" required>
+                                        <select name="role" id="role" class="form-input appearance-none pr-10" required>
                                             <option value="petugas" {{ old('role', $user->role ?? '') == 'petugas' ? 'selected' : '' }}>Petugas</option>
                                             <option value="admin" {{ old('role', $user->role ?? '') == 'admin' ? 'selected' : '' }}>Administrator</option>
                                         </select>
