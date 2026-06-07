@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pembayaran</title>
+    <title>Pembayaran Parkir</title>
+
+    {{-- MIDTRANS SNAP --}}
+    <script
+        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
 
     <style>
         body {
@@ -9,66 +15,192 @@
             color: white;
             text-align: center;
             font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .card {
-            margin-top: 100px;
             background: white;
             color: black;
-            padding: 30px;
-            border-radius: 20px;
-            display: inline-block;
-            width: 320px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            padding: 35px;
+            border-radius: 24px;
+            width: 360px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #0f172a;
         }
 
         h1 {
             color: #16a34a;
-        }
-
-        button {
-            padding: 12px;
-            width: 100%;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
-            border: none;
-            color: white;
-            border-radius: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            transform: scale(1.03);
+            margin: 20px 0;
+            font-size: 38px;
         }
 
         .info {
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            color: #334155;
         }
+
+        .member-box {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px;
+            border-radius: 14px;
+            margin-bottom: 18px;
+            font-weight: bold;
+            border: 1px solid #86efac;
+        }
+
+        button {
+            padding: 14px;
+            width: 100%;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            border: none;
+            color: white;
+            border-radius: 14px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 18px rgba(37,99,235,0.4);
+        }
+
+        .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 20px 0;
+        }
+
     </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="wrapper">
 
-    <h3>💳 Pembayaran Parkir</h3>
+    <div class="card">
 
-    <div class="info">ID Tiket: <b>#{{ $parkir->id }}</b></div>
-    <div class="info">Durasi: <b>{{ $durasi }} Jam</b></div>
+        <h3>💳 Pembayaran Parkir</h3>
 
-    <h1>Rp {{ number_format($biaya) }}</h1>
+        {{-- MEMBER --}}
+        @if(isset($member) && $member)
 
-    <!-- 🔥 FORM KE CONTROLLER -->
-    <form action="{{ route('bayar', $parkir->id) }}" method="POST">
-    @csrf
-    <button>
-        💰 Bayar Sekarang
-    </button>
-</form>
+        <div class="member-box">
+            ✅ MEMBER AKTIF - GRATIS PARKIR
+        </div>
+
+        @endif
+
+        <div class="info">
+            ID Tiket:
+            <b>#{{ $parkir->id }}</b>
+        </div>
+
+        <div class="info">
+            Durasi:
+            <b>{{ $durasi }} Jam</b>
+        </div>
+
+        @if($parkir->kendaraan)
+
+        <div class="info">
+            Plat Nomor:
+            <b>{{ $parkir->kendaraan->plat_nomor }}</b>
+        </div>
+
+        <div class="info">
+            Kendaraan:
+            <b>{{ ucfirst($parkir->kendaraan->jenis_kendaraan) }}</b>
+        </div>
+
+        @endif
+
+        <div class="divider"></div>
+
+        <h1>
+            Rp {{ number_format($biaya, 0, ',', '.') }}
+        </h1>
+
+        {{-- BUTTON BAYAR --}}
+        <button id="pay-button">
+            💳 Bayar Sekarang
+        </button>
+
+    </div>
 
 </div>
 
-</body>
-</html>
+<script
+src="https://app.sandbox.midtrans.com/snap/snap.js"
+data-client-key="{{ config('midtrans.client_key') }}">
+</script>
+
+<script>
+
+document.getElementById('pay-button')
+.addEventListener('click', function (e) {
+
+    e.preventDefault();
+
+    snap.pay('{{ $snapToken }}', {
+
+        onSuccess: function(result) {
+
+            window.location.href =
+            "{{ route('bayar.sukses', $parkir->id) }}";
+       },
+        onPending: function(result) {
+
+            console.log(result);
+
+            alert("Menunggu pembayaran...");
+        },
+
+        onError: function(result) {
+
+            console.log(result);
+
+            alert("Pembayaran gagal!");
+        },
+
+        onClose: function() {
+
+            alert("Popup ditutup");
+        }
+
+    });
+
+});
+
+</script>

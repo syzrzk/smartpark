@@ -84,6 +84,32 @@
             </div>
         </div>
 
+{{-- DATA MEMBER --}}
+<a href="{{ route('members.index') }}" style="
+    display:flex; align-items:center; gap:10px;
+    padding: 9px 10px; border-radius:8px; margin-bottom:2px;
+    font-size:13px; font-weight:500; text-decoration:none;
+    transition: all 0.15s;
+    {{ request()->routeIs('member.*') 
+        ? 'background:rgba(37,99,235,0.25); color:#93c5fd;' 
+        : 'color:#94a3b8;' }}
+"
+onmouseover="this.style.background='rgba(255,255,255,0.05)';this.style.color='#e2e8f0'"
+onmouseout="this.style.background='{{ request()->routeIs('member.*') ? 'rgba(37,99,235,0.25)' : 'transparent' }}';this.style.color='{{ request()->routeIs('member.*') ? '#93c5fd' : '#94a3b8' }}'">
+
+    <div style="
+        width:16px;
+        text-align:center;
+        flex-shrink:0;
+        font-size:13px;
+        {{ request()->routeIs('member.*') ? 'color:#60a5fa;' : 'color:#475569;' }}
+    ">
+        <i class="fas fa-id-card"></i>
+    </div>
+
+    Data Member
+</a>
+
         {{-- Data Petugas --}}
         <a href="{{ route('user.index') }}" style="
             display:flex; align-items:center; gap:10px;

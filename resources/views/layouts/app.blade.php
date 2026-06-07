@@ -230,9 +230,15 @@
             </header>
 
             <!-- CONTENT -->
-            <main class="page-content">
-                {{ $slot }}
-            </main>
+           <main class="page-content">
+
+    @hasSection('content')
+        @yield('content')
+    @else
+        {{ $slot ?? '' }}
+    @endif
+
+</main>
 
         </div>
 

@@ -217,24 +217,126 @@
 
         </div>
 
-        {{-- ═══════ ROW 2: CHART LINE + DONUT ═══════ --}}
-        <div class="row g-3 mb-4">
+       {{-- ═══════ ROW 2: MEMBER STATS ═══════ --}}
+<div class="row g-3 mb-4">
 
-            {{-- Line Chart: Pendapatan 30 Hari --}}
-            <div class="col-xl-8 col-md-7">
-                <div class="chart-panel">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div>
-                            <div class="panel-title">
-                                <i class="fas fa-chart-area" style="color:#3b82f6; font-size:14px;"></i>
-                                Pendapatan 30 Hari Terakhir
-                            </div>
-                            <div class="panel-sub">Tren pendapatan harian — auto refresh setiap 5 menit</div>
-                        </div>
+    {{-- MEMBER AKTIF --}}
+    <div class="col-xl-4 col-md-4">
+        <div class="stat-card card-green h-100">
+
+            <div class="d-flex align-items-center justify-content-between">
+
+                <div>
+                    <div class="stat-label">
+                        Member Aktif
                     </div>
-                    <canvas id="chartHarian" height="100"></canvas>
+
+                    <div class="stat-value">
+                        {{ $totalMemberAktif }}
+                    </div>
+
+                    <div class="stat-sub">
+                        member aktif
+                    </div>
                 </div>
+
+                <div class="icon-wrap" style="background:#ecfdf5;">
+                    <i class="fas fa-user-check" style="color:#10b981;"></i>
+                </div>
+
             </div>
+
+        </div>
+    </div>
+
+    {{-- MEMBER EXPIRED --}}
+    <div class="col-xl-4 col-md-4">
+        <div class="stat-card card-rose h-100">
+
+            <div class="d-flex align-items-center justify-content-between">
+
+                <div>
+                    <div class="stat-label">
+                        Member Expired
+                    </div>
+
+                    <div class="stat-value">
+                        {{ $totalMemberExpired }}
+                    </div>
+
+                    <div class="stat-sub">
+                        sudah expired
+                    </div>
+                </div>
+
+                <div class="icon-wrap" style="background:#fff1f2;">
+                    <i class="fas fa-user-times" style="color:#ef4444;"></i>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    {{-- VIP MEMBER --}}
+    <div class="col-xl-4 col-md-4">
+        <div class="stat-card card-amber h-100">
+
+            <div class="d-flex align-items-center justify-content-between">
+
+                <div>
+                    <div class="stat-label">
+                        VIP Member
+                    </div>
+
+                    <div class="stat-value">
+                        {{ $totalVip }}
+                    </div>
+
+                    <div class="stat-sub">
+                        vip aktif
+                    </div>
+                </div>
+
+                <div class="icon-wrap" style="background:#fffbeb;">
+                    <i class="fas fa-crown" style="color:#f59e0b;"></i>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{{-- ═══════ ROW 3: CHART LINE + DONUT ═══════ --}}
+<div class="row g-3 mb-4">
+
+    {{-- Line Chart: Pendapatan 30 Hari --}}
+    <div class="col-xl-8 col-md-7">
+        <div class="chart-panel">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <div>
+                    <div class="panel-title">
+                        <i class="fas fa-chart-area"
+                           style="color:#3b82f6; font-size:14px;"></i>
+
+                        Pendapatan 30 Hari Terakhir
+                    </div>
+
+                    <div class="panel-sub">
+                        Tren pendapatan harian — auto refresh setiap 5 menit
+                    </div>
+                </div>
+
+            </div>
+
+            <canvas id="chartHarian" height="100"></canvas>
+
+        </div>
+    </div>
 
             {{-- Donut: Tipe Kendaraan --}}
             <div class="col-xl-4 col-md-5">
