@@ -75,35 +75,66 @@
         });
 
         const html5QrCode = new Html5Qrcode('qr-reader');
-        const config = { fps: 10, qrbox: { width: 260, height: 260 }, aspectRatio: 1.0, disableFlip: false };
+        // Tingkatkan fps, qrbox, dan disableFlip untuk deteksi lebih baik
+        const config = { 
+            fps: 30, 
+            qrbox: { width: 350, height: 350 }, 
+            aspectRatio: 1.0, 
+            disableFlip: true,
+            experimentalFeatures: {
+                useBarcoderWorker: true
+            }
+        };
+
+        let scanAttempts = 0;
+        const maxScanAttempts = 100;
+        let hasDetected = false;
 
         function startScan() {
             html5QrCode.start(
                 { facingMode: 'environment' },
                 config,
                 (decodedText, decodedResult) => {
+                    scanAttempts++;
+                    
+                    // Log setiap deteksi untuk debugging
+                    console.log(`[Scan #${scanAttempts}] QR terdeteksi: ${decodedText}`);
+                    
+                    // Cek apakah QR dimulai dengan MEMBER-
                     if (decodedText && decodedText.startsWith('MEMBER-')) {
-                        setStatus('QR member terdeteksi. Memproses masuk...', false);
-                        memberQrCodeInput.value = decodedText.trim();
-                        html5QrCode.stop().then(() => {
-                            memberForm.submit();
-                        }).catch(err => {
-                            console.warn('Gagal berhenti scan:', err);
-                            memberForm.submit();
-                        });
+                        if (!hasDetected) {
+                            hasDetected = true;
+                            setStatus('✓ QR member terdeteksi! Memproses...', false);
+                            memberQrCodeInput.value = decodedText.trim();
+                            
+                            html5QrCode.stop().then(() => {
+                                console.log('Scanner dihentikan, form dikirim');
+                                memberForm.submit();
+                            }).catch(err => {
+                                console.warn('Gagal hentikan scanner, submit form anyway:', err);
+                                memberForm.submit();
+                            });
+                        }
                     }
                 },
                 (errorMessage) => {
-                    // ignore scan failure messages
+                    // Log error minimal, jangan terlalu sering
+                    if (scanAttempts % 50 === 0) {
+                        console.debug(`[Scan attempt ${scanAttempts}] Tidak ada QR terdeteksi`);
+                    }
                 }
             ).catch(err => {
                 setStatus('Gagal mengakses kamera. Periksa izin browser.', true);
                 scanHint.textContent = 'Refresh halaman dan izinkan kamera.';
-                console.error(err);
+                console.error('Kamera error:', err);
             });
         }
 
-        startScan();
+        // Tunggu sebentar sebelum mulai scan agar kamera siap
+        setTimeout(() => {
+            setStatus('Menunggu QR member...', 'loading');
+            startScan();
+        }, 1000);
     </script>
 </body>
 </html>
